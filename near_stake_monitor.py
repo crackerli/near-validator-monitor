@@ -34,10 +34,10 @@ rpcUrl = "https://rpc." + nodeEnv + ".near.org"
 rpcNodeUrl = nodeUrl
 
 # If we fit our staked tokens it will be this percentage of the estimated seat price
-seatPriceFactor = 1.25
+seatPriceFactor = 1.2
 
 # If our current staked tokens is above this threshold we reduce it to the seatPriceFactor amount
-upThreshold = 1.4
+upThreshold = 1.3
 
 # Betanet => 10,000, TestNet => 43,200, MainNet => 43,200
 epochLength = 10000
@@ -218,7 +218,7 @@ def fitStakeVolume(stakedAmount, t2SeatPrice):
 # the time this deamon should sleep can be calculated.
 def waitNextEpoch():
     waitSeconds = getNextQueryTime()
-    logging.info(f"Waiting for {waitSeconds} seconds")
+    logging.info(f"Waiting for {waitSeconds} seconds to start next seat price check")
     time.sleep(waitSeconds)
 
 
