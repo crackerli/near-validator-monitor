@@ -171,16 +171,26 @@ def getT2SeatPrice():
 # So we should get it from our own account state
 def getStakedAmount():
     stakedAmount = getStakedAmountFromT2()
-    if stakedAmount == 0:
-        stakedAmount = getStakedAmountFromAccount()
+#    if stakedAmount == 0:
+#        stakedAmount = getStakedAmountFromAccount()
     return stakedAmount
+
+def findProposedStakeAmount(proposals):
+    proposalsLoad = proposals.split(stakingPoolId)[1].split("|")[1]
+    if "=>" in proposalsLoad:
+        proposedAmount = proposalsLoad.split("=>")[1]
+    else:
+        proposedAmount = proposalsLoad.split("=>")[0]
+
+    return proposedAmount.replace(",", "").replace(" ", "")
 
 def getStakedAmountFromT2():
     proposals = getProposals()
 
     try:
         stakedAmount = int(
-            proposals.split(stakingPoolId)[1].split("|")[1].split("=>")[0].replace(",", "").replace(" ", "")
+#            proposals.split(stakingPoolId)[1].split("|")[1].split("=>")[0].replace(",", "").replace(" ", "")
+            findProposedStakeAmount(proposals)
         ) * 10 ** 24
     except IndexError:
         stakedAmount = 0
