@@ -51,6 +51,15 @@ def trySeatAdapt():
 def convertSlot2Time(slots):
     return int(slots * slotDuration) - 20
 
+# Get the t2 information
+def getProposals():
+    try:
+        proposals = subprocess.check_output([f"near proposals {shellPostfix}"], shell=True, env=os.environ,stderr=subprocess.STDOUT).decode('UTF-8')
+        return proposals
+    except subprocess.CalledProcessError as e:
+        logging.error("Get proposals failed", e.returncode, e.output)
+        sys.exit()
+
 def reduceStakeVolume(stakedAmount, t2SeatPrice):
     # Unstake additional tokens
     decreaseVolume = int(stakedAmount - (t2SeatPrice * seatPriceFactor))
@@ -136,21 +145,12 @@ def checkValidatorState():
 
 
 def getT2SeatPrice():
-    try:
-        proposals = subprocess.check_output(
-            [f"near proposals {shellPostfix}"],
-            shell=True,
-            env=os.environ,
-            stderr=subprocess.STDOUT,
-        ).decode('UTF-8')
-    except subprocess.CalledProcessError as e:
-        logging.error("Get proposals failed", e.returncode, e.output)
-        sys.exit()
+    proposals = getProposals()
 
     # Retrieve the string of seat price
     proposalsSeatPrice = proposals.split("seat price = ")[1].split(")")[0]
     seatYocto = int(proposalsSeatPrice.replace(",", "")) * 10 ** 24
-    logging.info(f"Current seat price of Proposals: {proposalsSeatPrice}")
+    logging.info(f"Seat price of Proposals: {proposalsSeatPrice}")
     return seatYocto
 
 # If we don't get the staked amount from "near proposals", which means we are not in the list.
@@ -162,11 +162,7 @@ def getStakedAmount():
     return stakedAmount
 
 def getStakedAmountFromT2():
-    try:
-        proposals = subprocess.check_output([f"near proposals {shellPostfix}"], shell=True, env=os.environ).decode('UTF-8')
-    except Exception as e:
-        logging.error("Get t2 info failed:", e)
-        sys.exit()
+    proposals = getProposals()
 
     try:
         stakedAmount = int(
@@ -182,9 +178,7 @@ def getStakedAmountFromT2():
 def getStakedAmountFromAccount():
     try:
         state = subprocess.check_output(
-            [f"near state {stakingPoolId} {shellPostfix}"],
-            shell=True,
-            env=os.environ
+            [f"near state {stakingPoolId} {shellPostfix}"], shell=True, env=os.environ
         ).decode('UTF-8')
 
     except Exception as e:
