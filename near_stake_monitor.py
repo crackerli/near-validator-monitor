@@ -28,6 +28,11 @@ logging.info(f"Current node env: {nodeEnv}")
 nodeUrl = "http://45.77.177.210:3030"
 shellPostfix = "--node_url " + nodeUrl
 
+rpcUrl = "https://rpc." + nodeEnv + ".near.org"
+
+# If there is ongoing incident, we use this url instead
+rpcNodeUrl = nodeUrl
+
 # If we fit our staked tokens it will be this percentage of the estimated seat price
 seatPriceFactor = 1.3
 
@@ -38,6 +43,9 @@ upThreshold = 1.4
 epochLength = 10000
 slotDuration = 3 * 60 * 60 / epochLength
 logging.info(f"Slot time: {slotDuration}s")
+
+def getRpcUrl():
+    return rpcNodeUrl
 
 def trySeatAdapt():
    ping()
@@ -100,12 +108,12 @@ def increaseStakeVolume(stakedAmount, t2SeatPrice):
 # Query next network params ask time
 def getNextQueryTime():
     # Get the current block height.
-    rspCurrentHeight = requests.get(f"https://rpc.{nodeEnv}.near.org/status").json()
+    rspCurrentHeight = requests.get(getRpcUrl() + "status").json()
     latestBlockHeight = int(rspCurrentHeight['sync_info']['latest_block_height'])
     logging.info(f"Latest block height is: {latestBlockHeight}")
 
     # Get the block height of epoch start
-    rspEpochHeight = requests.post(f"https://rpc.{nodeEnv}.near.org",
+    rspEpochHeight = requests.post(getRpcUrl(),
                              json={"jsonrpc": "2.0", "method": "validators", "id": "dontcare", "params": [None]},
                              params='[]',
                              ).json()
@@ -132,7 +140,7 @@ def ping():
 
 
 def checkValidatorState():
-    rspValidators = requests.post(f"https://rpc.{nodeEnv}.near.org",
+    rspValidators = requests.post(getRpcUrl(),
                              json={"jsonrpc": "2.0", "method": "status", "id": stakingPoolId},
                              params='[]'
                              ).json()
