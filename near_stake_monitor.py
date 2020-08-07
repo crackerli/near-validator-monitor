@@ -108,7 +108,7 @@ def increaseStakeVolume(stakedAmount, t2SeatPrice):
 # Query next network params ask time
 def getNextQueryTime():
     # Get the current block height.
-    rspCurrentHeight = requests.get(getRpcUrl() + "status").json()
+    rspCurrentHeight = requests.get(getRpcUrl() + "/status").json()
     latestBlockHeight = int(rspCurrentHeight['sync_info']['latest_block_height'])
     logging.info(f"Latest block height is: {latestBlockHeight}")
 
