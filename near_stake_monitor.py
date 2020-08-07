@@ -214,9 +214,9 @@ def waitNextEpoch():
 
 if __name__ == "__main__":
     logging.info("Start bot to watch and manage stake amount")
-    getStakedAmount()
-#    while True:
-#        trySeatAdapt()
-#        # Wait until the next epoch
-#        waitNextEpoch()
+
+   while True:
+       trySeatAdapt()
+       # Wait until the next epoch
+       waitNextEpoch()
 
