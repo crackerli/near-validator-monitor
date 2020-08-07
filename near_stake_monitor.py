@@ -227,11 +227,11 @@ def waitNextEpoch():
 
 
 if __name__ == "__main__":
-    logging.info("###################### New round to query network params ############################")
-    logging.info("                 ")
     logging.info("Start bot to watch and manage stake amount")
 
     while True:
+        logging.info("###################### New round to query network params ############################")
+        logging.info("                 ")
         trySeatAdapt()
         logging.info("###################### End of this round ############################")
         logging.info("                 ")
