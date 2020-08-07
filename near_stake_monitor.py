@@ -22,7 +22,7 @@ masterAccountId = "lizhongbo3.betanet"
 # The node env, be sure it has been exported in system env to be right.
 nodeEnv = os.environ.get('NODE_ENV')
 # Print out to check the current node env
-logging.info(f"Current node env: {nodeEnv}")
+logging.info(f"######### Current node env: {nodeEnv}")
 
 # Betanet is not stable now, we would better access network from our own node
 nodeUrl = "http://45.77.177.210:3030"
@@ -42,7 +42,7 @@ upThreshold = 1.3
 # Betanet => 10,000, TestNet => 43,200, MainNet => 43,200
 epochLength = 10000
 slotDuration = 3 * 60 * 60 / epochLength
-logging.info(f"Slot time: {slotDuration}s")
+logging.info(f"########## Slot time: {slotDuration}s")
 
 def getRpcUrl():
     return rpcNodeUrl
@@ -58,9 +58,9 @@ def trySeatAdapt():
 # Delta 20 seconds to avoid if the calculation is not precise.
 def convertSlot2Time(slots):
     time2Sleep = int(slots * slotDuration) - 20
-    # Force to sleep at least 8 minutes
+    # Force to sleep at least 6 minutes
     if time2Sleep <= 0:
-        time2Sleep = 8 * 60
+        time2Sleep = 6 * 60
     return time2Sleep
 
 # Get the t2 information
@@ -234,6 +234,7 @@ if __name__ == "__main__":
     while True:
         trySeatAdapt()
         logging.info("###################### End of this round ############################")
+        logging.info("                 ")
         # Wait until the next epoch
         waitNextEpoch()
 
