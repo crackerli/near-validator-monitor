@@ -34,7 +34,7 @@ rpcUrl = "https://rpc." + nodeEnv + ".near.org"
 rpcNodeUrl = nodeUrl
 
 # If we fit our staked tokens it will be this percentage of the estimated seat price
-seatPriceFactor = 1.3
+seatPriceFactor = 1.25
 
 # If our current staked tokens is above this threshold we reduce it to the seatPriceFactor amount
 upThreshold = 1.4
