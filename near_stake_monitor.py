@@ -57,7 +57,11 @@ def trySeatAdapt():
 # Calculate how many time we should sleep until next epoch.
 # Delta 20 seconds to avoid if the calculation is not precise.
 def convertSlot2Time(slots):
-    return int(slots * slotDuration) - 20
+    time2Sleep = int(slots * slotDuration) - 20
+    # Force to sleep at least 8 minutes
+    if time2Sleep <= 0:
+        time2Sleep = 8 * 60
+    return time2Sleep
 
 # Get the t2 information
 def getProposals():
@@ -223,10 +227,13 @@ def waitNextEpoch():
 
 
 if __name__ == "__main__":
+    logging.info("###################### New round to query network params ############################")
+    logging.info("                 ")
     logging.info("Start bot to watch and manage stake amount")
 
     while True:
         trySeatAdapt()
+        logging.info("###################### End of this round ############################")
         # Wait until the next epoch
         waitNextEpoch()
 
