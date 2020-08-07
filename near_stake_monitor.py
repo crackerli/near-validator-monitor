@@ -113,6 +113,8 @@ def getNextQueryTime():
     epochStartHeight = int(rspEpochHeight['result']['epoch_start_height'])
     logging.info(f"Epoch start height is: {epochStartHeight}")
     slotDelta = epochStartHeight + epochLength - latestBlockHeight
+    if epochStartHeight == 0:
+        slotDelta = 10 * 60
     return convertSlot2Time(slotDelta);
 
 def ping():
