@@ -34,10 +34,10 @@ rpcUrl = "https://rpc." + nodeEnv + ".near.org"
 rpcNodeUrl = nodeUrl
 
 # If we fit our staked tokens it will be this percentage of the estimated seat price
-seatPriceFactor = 1.2
+seatPriceFactor = 1.06
 
 # If our current staked tokens is above this threshold we reduce it to the seatPriceFactor amount
-upThreshold = 1.3
+upThreshold = 1.08
 
 # Betanet => 10,000, TestNet => 43,200, MainNet => 43,200
 epochLength = 10000
@@ -189,7 +189,6 @@ def getStakedAmountFromT2():
 
     try:
         stakedAmount = int(
-#            proposals.split(stakingPoolId)[1].split("|")[1].split("=>")[0].replace(",", "").replace(" ", "")
             findProposedStakeAmount(proposals)
         ) * 10 ** 24
     except IndexError:
