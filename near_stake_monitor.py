@@ -34,10 +34,10 @@ rpcUrl = "https://rpc." + nodeEnv + ".near.org"
 rpcNodeUrl = nodeUrl
 
 # If we fit our staked tokens it will be this percentage of the estimated seat price
-seatPriceFactor = 1.06
+seatPriceFactor = 1.05
 
 # If our current staked tokens is above this threshold we reduce it to the seatPriceFactor amount
-upThreshold = 1.08
+upThreshold = 1.05
 
 # Betanet => 10,000, TestNet => 43,200, MainNet => 43,200
 epochLength = 10000
@@ -79,8 +79,9 @@ def reduceStakeVolume(stakedAmount, t2SeatPrice):
     if decreaseVolume < 0:
         return
 
+    logging.info(f"Too many tokens to bid this seat, {decreaseVolume} should be unstaked")
     try:
-        subprocess.check_output(
+        unstakeRet = subprocess.check_output(
             [f'near call {stakingPoolId} unstake \'{{"amount": "{decreaseVolume}"}}\' --accountId {masterAccountId} {shellPostfix}'],
             env=os.environ,
             shell=True
@@ -88,6 +89,8 @@ def reduceStakeVolume(stakedAmount, t2SeatPrice):
     except Exception as exception:
         logging.error("Re-unstaking less near failed!", exception)
         sys.exit()
+
+    logging.info(f"Unstake result: {unstakeRet}")
     logging.info(f"Unstake less near of {decreaseVolume} Succeeded")
 
 
@@ -98,8 +101,9 @@ def increaseStakeVolume(stakedAmount, t2SeatPrice):
     if increaseVolume < 0:
         return
 
+    logging.info(f"Not enough tokens to bid this seat, additional {increaseVolume} should be staked")
     try:
-        subprocess.check_output(
+        stakeRet = subprocess.check_output(
             [f'near call {stakingPoolId} stake \'{{"amount": "{increaseVolume}"}}\' --accountId {masterAccountId} {shellPostfix}'],
             env=os.environ,
             shell=True
@@ -107,6 +111,8 @@ def increaseStakeVolume(stakedAmount, t2SeatPrice):
     except Exception as e:
         logging.error("Re-staking more near failed!", e)
         sys.exit()
+
+    logging.info(f"Stake result: {stakeRet}")
     logging.info(f"Stake more near of {increaseVolume} Succeeded")
 
 # Query next network params ask time
@@ -193,7 +199,7 @@ def getStakedAmountFromT2():
         ) * 10 ** 24
     except IndexError:
         stakedAmount = 0
-    logging.info(f"{stakingPoolId} has locked {stakedAmount} tokens")
+    logging.info(f"{stakingPoolId} bid the seat with {stakedAmount} tokens")
     return stakedAmount
 
 # Want to get the current proposed stake token, but not precise since it can be changed from previous "stake" operation
