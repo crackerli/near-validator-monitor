@@ -87,7 +87,7 @@ def reduceStakeVolume(stakedAmount, t2SeatPrice):
             shell=True
         ).decode('UTF-8')
     except Exception as exception:
-        logging.error("Re-unstaking less near failed!", exception, unstakeRet)
+        logging.error("Re-unstaking less near failed!", exception)
         sys.exit()
 
     logging.info(f"Unstake result: {unstakeRet}")
@@ -109,7 +109,7 @@ def increaseStakeVolume(stakedAmount, t2SeatPrice):
             shell=True
         ).decode('UTF-8')
     except Exception as e:
-        logging.error("Re-staking more near failed!", e, stakeRet)
+        logging.error("Re-staking more near failed!", e)
         sys.exit()
 
     logging.info(f"Stake result: {stakeRet}")
