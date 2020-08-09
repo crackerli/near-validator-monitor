@@ -237,7 +237,7 @@ def fitStakeVolume(stakedAmount, t2SeatPrice):
 # the time this deamon should sleep can be calculated.
 def waitNextEpoch():
     waitSeconds = getNextQueryTime()
-    logging.info(f"Waiting for {waitSeconds} seconds to start next seat price check")
+    logging.info(f"Waiting for estimated {waitSeconds} seconds to start next seat price check")
     time.sleep(waitSeconds)
 
 
