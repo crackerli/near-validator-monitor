@@ -1,0 +1,14 @@
+[Unit]
+Description=Near token stake monitor
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/usr/bin/python3.6 /Path_to_repo/near-validator-monitor.py
+
+[Install]
+WantedBy=multi-user.target
