@@ -14,10 +14,10 @@ import json
 logging.basicConfig(level = logging.INFO)
 
 # Staking Pool control the staking pool contract.
-stakingPoolId = "staking_viboracecata.stakehouse.betanet"
+stakingPoolId = "xxx.xxx.betanet"
 
 # Master account id control the staked near tokens.
-masterAccountId = "lizhongbo3.betanet"
+masterAccountId = "xxx.betanet"
 
 # The node env, be sure it has been exported in system env to be right.
 nodeEnv = os.environ.get('NODE_ENV')
@@ -25,7 +25,7 @@ nodeEnv = os.environ.get('NODE_ENV')
 logging.info(f"######### Current node env: {nodeEnv}")
 
 # Betanet is not stable now, we would better access network from our own node
-nodeUrl = "http://45.77.177.210:3030"
+nodeUrl = "http://your_ip:your_port"
 shellPostfix = "--node_url " + nodeUrl
 
 rpcUrl = "https://rpc." + nodeEnv + ".near.org"
@@ -70,7 +70,6 @@ def getProposals():
         return proposals
     except subprocess.CalledProcessError as e:
         logging.error("Get proposals failed", e.returncode, e.output)
-        sys.exit()
 
 def reduceStakeVolume(stakedAmount, t2SeatPrice):
     # Unstake additional tokens
@@ -88,7 +87,6 @@ def reduceStakeVolume(stakedAmount, t2SeatPrice):
         ).decode('UTF-8')
     except Exception as exception:
         logging.error("Re-unstaking less near failed!", exception)
-        sys.exit()
 
     logging.info(f"Unstake result: {unstakeRet}")
     logging.info(f"Unstake less near of {decreaseVolume} Succeeded")
@@ -110,7 +108,6 @@ def increaseStakeVolume(stakedAmount, t2SeatPrice):
         ).decode('UTF-8')
     except Exception as e:
         logging.error("Re-staking more near failed!", e)
-        sys.exit()
 
     logging.info(f"Stake result: {stakeRet}")
     logging.info(f"Stake more near of {increaseVolume} Succeeded")
@@ -146,7 +143,6 @@ def ping():
         logging.info(f"Ping of contract {stakingPoolId} succeeded")
     except subprocess.CalledProcessError as e:
         logging.error(f"Ping of contract {stakingPoolId} failed", e.returncode, e.output)
-        sys.exit()
 
 
 def checkValidatorState():
