@@ -212,7 +212,6 @@ def getStakedAmountFromAccount():
 
     except Exception as e:
         logging.error(f"Get account {stakingPoolId} state failed:", e)
-        sys.exit()
 
     try:
         lockedAmount = state.split("locked")[1].split(",")[0].replace(": ", "").replace(" ", "").replace("'", "").replace("\x1b[32m", "").replace("\x1b[39m", "")
@@ -221,7 +220,6 @@ def getStakedAmountFromAccount():
         return int(lockedAmount)
     except Exception as e:
         logging.error(f"Get account {stakingPoolId} state failed:", e)
-        sys.exit()
 
 
 def fitStakeVolume(stakedAmount, t2SeatPrice):
